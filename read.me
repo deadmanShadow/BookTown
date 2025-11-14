@@ -1,0 +1,86 @@
+
+
+Services
+
+Gateway
+	[Authorize] Create/check token
+	Retrieve User IP to get GeoLocation (map in Kibana)
+	BFF aggregators (with gRPC)
+	Cash requests (InMemory)
+	Request limiting
+	     
+Auth
+	AWS Cognito
+	JWT/Refresh token
+	Google/FB authentication
+	Save User IP with GeoLocation (map in Kibana)
+	User Logins/SignUps metrics to Prometheus/Grafana
+
+Orders
+	Saga coordinator
+	PostgreSQL as DB (EF)
+	MediatR
+	CQRS pattern
+	FluentValidator
+	UnitOfWork for transactions
+
+Basket
+	Redis as DB
+	gRPC for BFF aggregators?
+
+Catalog
+	Elastic as DB for Autocomplete, complex searches and FT search in all fields
+	gRPC for BFF aggregators?
+	OpenTelemetry(APM?) (API controllers, Core, Elastic)
+
+Inventory
+	Redis as DB
+
+
+Payment
+	Stripe sandbox
+
+PriceCalculator
+	Coupons
+	Time limited discounts
+	Calculates final price (have to store all current prices)
+	Get special offers for specific product
+	? as DB
+
+Recommendations
+	Stores ratings, buy facts, reviews
+	Get ratings, "ALSO BOUGHT", Reviews
+	Neo4j as graph DB
+
+
+	
+Logging
+	seq
+	APM (OpenTelemetry?)
+
+
+Notification service
+	Save UserDevices IDs
+	Deduplicate messages
+	Emulate sending by deleting old messages (TTL)
+	Redis as DB
+
+ServiceBus
+	Kafka
+	RabbitMQ
+
+For all services
+	Unit Testing
+	Functional Testing
+	HealthChecks for all services (https://medium.com/aspnetrun/microservices-monitoring-with-health-checks-using-watchdog-6b16fdae0349)
+	Pagination
+	Swagger in Dev
+
+Good to have
+	SDK libs for project
+        User Secrets
+	CI/CD
+	K8s 
+	Terraform
+	LB ?
+	Python scraping book store for realistic data
