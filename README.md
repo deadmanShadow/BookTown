@@ -1,85 +1,64 @@
-# Booktown microservice project
+# Booktown Microservice Project
 
 ## Introduction
 
-Microservices are becoming a new trend, thanks to the modularity and granularity they provide on top of advantages like releasing applications in a continuous manner.
-There are tons of information, courses, great YouTube videos which aim to make writing and managing microservices easy.
+Microservices have become a modern architectural approach due to the modularity, independence, and flexibility they provide. They enable large systems to be developed, scaled, and deployed continuously. Despite the abundance of educational resources available, applying these concepts directly to real-world scenarios can still be challenging.
 
-But the acquired knowledge is not always possible to apply to your current job.
+This demo application was created to illustrate how microservices are structured, how they interact, and how various architectural patterns and best practices can be applied in practice.
 
-Keeping that in mind, I thought, why not make a demo application that can give an example of how microservices are built and how they interact, implement best practices and architecture patterns.
+## General Overview
 
-## General overview
+Selecting the right domain is essential. Simple examples like to-do applications or basic CRUD systems are too limited to reflect the true value of microservices. An eCommerce system, on the other hand, includes a diverse set of well-understood entities and services.
 
-What domain should we choose? Popular TODO list service is too trivial. CRUD service is not an option also :unamused:
-Well, eCommerce application is something everyone understands. There are several well-defined services and entities in this domain.
+A book store domain is therefore a suitable choice for demonstrating microservice concepts.
 
-Yet another book store is what we need. :smiley:
+Following the principles of clean architecture, this project includes several independent services:
 
-Ok, let us try to implement `clean architecture`.
-We can play with
+* [Ocelot API Gateway](Src/APIGateway/README.md)
+* [Identity Service](Src/Services/Identity/README.md)
+* [Orders Service](Src/Services/Orders/README.md)
+* [Catalog Service](Src/Services/Catalog/README.md)
+* [Basket Service](Src/Services/Basket/README.md)
+* [Ratings Service](Src/Services/Ratings/README.md)
+* [Payments Service](Src/Services/Payments/README.md)
+* [Inventory Service](Src/Services/Inventory/README.md)
+* [PriceCalculator Service](Src/Services/PriceCalculator/README.md)
+* [RatingsAccumulator Service](Src/Services/RatingsAccumulator/README.md)
+* Basket BFF
+* Order BFF
 
-- [Ocelot API Gateway](Src/APIGateway/README.md)
+Each service uses the most suitable type of data storage, whether relational or NoSQL. Technologies include:
 
-- [Identity service](Src/Services/Identity/README.md)
-- [Orders service](Src/Services/Orders/README.md)
-- [Catalog service](Src/Services/Catalog/README.md)
-- [Basket service](Src/Services/Basket/README.md)
-- [Ratings service](Src/Services/Ratings/README.md)
-- [Payments service](Src/Services/Payments/README.md)
-- [Inventory service](Src/Services/Inventory/README.md)
-- [PriceCalculator service](Src/Services/PriceCalculator/README.md)
-- [RatingsAccumulator service](Src/Services/RatingsAccumulator/README.md)
+* Postgres
+* Redis
+* MongoDB
+* ElasticSearch
+* Neo4j
 
-- [Basket BFF]()
-- [Order BFF]()
+For asynchronous communication, the system uses a service bus with the CQRS pattern alongside MediatR, FluentValidation, and AutoMapper. Masstransit with RabbitMQ is used as the message broker.
 
-and everything you can think of!
+An API Gateway built with Ocelot protects the internal network. Additionally, a BFF layer is included to demonstrate synchronous service aggregation and the use of gRPC.
 
-Also we can use the most suitable persistent storages for each service **Relational databases** and **NoSQL**.
+Monitoring and observability are incorporated through logging, metrics, tracing, and health checks.
 
-- `Postgres`
-- `Redis`
-- `Mongo`
-- `Elastic Search`
-- `Neo4j`
+Since the system has many moving parts, orchestration patterns such as Saga are also considered.
 
-you name it!
+Testing is an essential requirement, and xUnit is used for unit and integration tests.
 
-For asynchronous communications with Service bus we'll leverage `CQRS` pattern with using `MediatR`, `FluentValidation` and `AutoMapper` packages and choose `Masstransit` with `RabbitMQ` as one of the most popular open source message brokers.
+All microservices are containerized and can be run locally via Docker Compose or deployed to a local Kubernetes cluster.
 
-We'll put an [API Gateway](Src/APIGateway/README.md) based on `Ocelot API Gateway` in front of our app, to protect inner network.
-Though it is not absolutely necessary we will create `BFF` aggregator with sync service communication with the purpose - get our hands dirty on `gRPC` :)
+The implementation is based on C# and ASP.NET Core 6.
 
-Also we need to add some monitoring and observability to our system - `Logging`, `Metrics`, `Traces`, `Healthchecks`.
+A frontend or mobile client is intentionally excluded to maintain focus on backend architecture. Contributions or ideas for user-facing applications are welcome.
 
-We all love dashboards
+## Architectural Overview
 
-Since there are lots of moving parts, we need to orchestrate the whole process. `Saga pattern` is also a hot topic nowadays.
+This application is fully cross-platform thanks to .NET 6, allowing services to run inside Linux or Windows containers depending on the Docker host.
 
-Unit and Integration testing is a mandatory requirement. `xUnit` is a right tool for it.
+The architecture follows a microservice-oriented design with multiple autonomous services, each maintaining ownership of its own data. Different architectural styles—ranging from simple CRUD to DDD with CQRS—are applied based on the requirements of each domain area.
 
-Some `CI/CD` tools would also be appropriate.
-
-All microservices should be containerized it goes without saying. So we'll create `Docker` images
-Also app can be run locally using docker-compose, and also deployed to a local `Kubernetes` cluster.
-
-`C# ASP.NET Core 6` is our weapon of choice.
-
-The only thing we'll not create is a frontend application or mobile app.
-Well I'm a backend developer. So I'll concentrate on my trade.
-But if you want to help me with user app - feel free to send me your ideas.
-
-## Architectural overview
-
-This application is cross-platform at the server side, thanks to .NET 6 services capable of running on Linux or Windows containers depending on your `Docker` host.
-The architecture proposes a microservice oriented architecture implementation with multiple autonomous microservices (each one owning its own data/DB) and implementing different approaches within each
-microservice (simple CRUD vs. DDD/CQRS patterns) using HTTP as the communication protocol between the client apps and the microservices and supports asynchronous communication for data
-updates propagation across multiple services based on Integration Events and a Masstransit Event Bus (a light message broker, to choose between RabbitMQ or Kafka, underneath) plus other
-features defined at the roadmap.
+The system uses HTTP for communication between client applications and microservices, and asynchronous integration events are propagated through a Masstransit event bus backed by RabbitMQ or Kafka.
 
 ![Architecture](img/Booktown-architecture.png)
 
-It is not a production-ready project but rather showcase of architectural patterns and technologies.
-But I think it might be helpful for education purposes.
-If you have ideas how to improve project, please share them with me.
+This project is not intended for production use, but rather as an educational showcase of architectural practices, patterns, and technologies. Suggestions and improvements are always welcome.
