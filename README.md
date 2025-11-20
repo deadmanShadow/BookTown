@@ -47,13 +47,13 @@ Testing is an essential requirement, and xUnit is used for unit and integration 
 
 All microservices are containerized and can be run locally via Docker Compose or deployed to a local Kubernetes cluster.
 
-The implementation is based on C# and ASP.NET Core 9.
+The implementation is based on C# and ASP.NET Core.
 
 A frontend or mobile client is intentionally excluded to maintain focus on backend architecture. Contributions or ideas for user-facing applications are welcome.
 
 ## Architectural Overview
 
-This application is fully cross-platform thanks to .NET 9, allowing services to run inside Linux or Windows containers depending on the Docker host.
+This application is fully cross-platform thanks to .NET 10, allowing services to run inside Linux or Windows containers depending on the Docker host.
 
 The architecture follows a microservice-oriented design with multiple autonomous services, each maintaining ownership of its own data. Different architectural styles—ranging from simple CRUD to DDD with CQRS—are applied based on the requirements of each domain area.
 
